@@ -18,4 +18,8 @@ public class CategoriaServico {		//Chamada de serviço
 		Optional<Categoria> obj = repo.findById(id);
 		return obj.orElse(null);
 	}
+	
+	public void adicionar() {
+		
+	}
 }

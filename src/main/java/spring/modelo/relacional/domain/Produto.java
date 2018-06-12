@@ -8,26 +8,34 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 @Entity
-public class Categoria implements Serializable { // Objeto(Dominio)
+public class Produto implements Serializable{
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
+	private Double preco;
 
-	@ManyToMany(mappedBy="categorias")
-	private List<Produto> produtos = new ArrayList<Produto>();
+	@ManyToMany
+	@JoinTable(name="PRODUTO_CATEGORIA",
+	joinColumns = @JoinColumn(name = "produto_id"),
+	inverseJoinColumns = @JoinColumn(name = "categoria_id"))
+	private List<Categoria> categorias = new ArrayList<Categoria>();
 
-	public List<Produto> getProdutos() {
-		return produtos;
+	public Produto() {
 	}
 
-	public void setProdutos(List<Produto> produtos) {
-		this.produtos = produtos;
+	public Produto(Integer id, String nome, Double preco) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.preco = preco;
 	}
 
 	public Integer getId() {
@@ -46,21 +54,27 @@ public class Categoria implements Serializable { // Objeto(Dominio)
 		this.nome = nome;
 	}
 
-	public Categoria(Integer id, String nome) {
-		super();
-		this.id = id;
-		this.nome = nome;
+	public Double getPreco() {
+		return preco;
 	}
 
-	public Categoria() {
-		super();
+	public void setPreco(Double preco) {
+		this.preco = preco;
+	}
+
+	public List<Categoria> getCategoria() {
+		return categorias;
+	}
+
+	public void setCategoria(List<Categoria> categoria) {
+		this.categorias = categoria;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + id;
 		return result;
 	}
 
@@ -72,11 +86,8 @@ public class Categoria implements Serializable { // Objeto(Dominio)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Categoria other = (Categoria) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
+		Produto other = (Produto) obj;
+		if (id != other.id)
 			return false;
 		return true;
 	}
