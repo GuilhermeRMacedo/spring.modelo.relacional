@@ -1,0 +1,26 @@
+package spring.modelo.relacional.services;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import spring.modelo.relacional.domain.Categoria;
+import spring.modelo.relacional.domain.Pedido;
+import spring.modelo.relacional.repositories.PedidoRepository;
+
+@Service
+public class PedidoServico {		//Chamada de serviço
+	
+	@Autowired
+	private PedidoRepository repo;
+	
+	public Pedido findById(Integer id) {
+		Optional<Pedido> obj = repo.findById(id);
+		return obj.orElseThrow(()-> new ObjectNotFoundException("Objeto não encontrado id :) "+ id + " Tipo: "+ Categoria.class.getName()));
+	}
+	
+	public void adicionar() {
+		
+	}
+}
