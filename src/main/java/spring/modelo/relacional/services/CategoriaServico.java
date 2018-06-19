@@ -3,6 +3,7 @@ package spring.modelo.relacional.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import spring.modelo.relacional.domain.Categoria;
@@ -23,7 +24,7 @@ public class CategoriaServico {		//Chamada de serviço
 		obj.setId(null);
 		return repo.save(obj);
 	}
-
+	
 	public Categoria update(Categoria obj) {
 		findById(obj.getId());
 		return repo.save(obj);	//serve tanto para inserir qto para atualizar
@@ -31,7 +32,12 @@ public class CategoriaServico {		//Chamada de serviço
 
 	public void delete(Integer id) {
 		findById(id);
-		repo.deleteById(id);
+		try {
+			repo.deleteById(id);	
+		}catch(DataIntegrityViolationException e){		//Delete em cascata	
+			throw new DataIntegrityException("Não é possivel excluir categoria que possui a produtos");
+		}
+		
 		
 	}
 }
