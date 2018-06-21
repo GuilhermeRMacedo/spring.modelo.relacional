@@ -23,4 +23,34 @@ public class ClienteResource {		//Rest
 		return ResponseEntity.ok().body(obj);
 	}
 	
+	//PUT, ATUALIZAR
+	//DELETE, DELETAR
+	//GET, TODOS CLIENTES
+	//GET, TODOS OS CLIENTES COM PAGINAÇÃO
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+	public ResponseEntity<Cliente> update(@PathVariable Integer id){
+		Cliente obj = service.findById(id);
+		return ResponseEntity.ok().body(obj);
+	}
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Integer id){
+		
+		return null;
+	}
+	
+	@RequestMapping(method=RequestMethod.DELETE)
+	public ResponseEntity<Void> findAll(@PathVariable Integer id){
+		
+		return null;
+	}
+	
+	@RequestMapping(value="/page", method=RequestMethod.DELETE)
+	public ResponseEntity<Void> findPage(@PathVariable Integer id){
+		
+		return null;
+	}
+	
+	
 }
