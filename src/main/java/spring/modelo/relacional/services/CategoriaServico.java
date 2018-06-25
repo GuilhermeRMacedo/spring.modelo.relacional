@@ -32,7 +32,8 @@ public class CategoriaServico { // Chamada de serviço
 	}
 
 	public Categoria update(Categoria obj) {
-		findById(obj.getId());
+		Categoria newObj = findById(obj.getId());
+		uppdateData(newObj, obj);
 		return repo.save(obj); // serve tanto para inserir qto para atualizar
 	}
 
@@ -43,19 +44,22 @@ public class CategoriaServico { // Chamada de serviço
 		} catch (DataIntegrityViolationException e) { // Delete em cascata
 			throw new DataIntegrityException("Não é possivel excluir categoria que possui a produtos");
 		}
-
 	}
 
 	public List<Categoria> findAll() {
 		return repo.findAll();
 	}
-	
-	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+
+	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pageRequest);
 	}
-	
+
 	public Categoria fromDTO(CategoriaDTO objDto) {
 		return new Categoria(objDto.getId(), objDto.getNome());
+	}
+
+	private void uppdateData(Categoria newObj, Categoria obj) {
+		newObj.setNome(obj.getNome());
 	}
 }
