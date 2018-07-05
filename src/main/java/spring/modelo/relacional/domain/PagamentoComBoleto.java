@@ -5,10 +5,11 @@ import java.util.Date;
 import javax.persistence.Entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import spring.modelo.relacional.domain.enums.EstadoPagamento;
 
 @Entity
+@JsonTypeName("pagamentoComBoleto")
 public class PagamentoComBoleto extends Pagamento {
 	private static final long serialVersionUID = 1L;
 
@@ -18,7 +19,8 @@ public class PagamentoComBoleto extends Pagamento {
 	@JsonFormat(pattern="dd/MM/yyyy HH:mm")
 	private Date dataPagamento;
 
-	public PagamentoComBoleto() {}
+	public PagamentoComBoleto() {
+	}
 	
 	public PagamentoComBoleto(Integer id, EstadoPagamento tipoPagamento, Pedido pedido, Date dataVencimento, Date dataPagamento) {
 		super(id, tipoPagamento, pedido);

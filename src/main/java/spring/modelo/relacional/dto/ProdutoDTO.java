@@ -12,13 +12,12 @@ public class ProdutoDTO implements Serializable {
 	private Double preco;
 
 	public ProdutoDTO() {
-
 	}
 	
-	public ProdutoDTO(Produto p) {
-		id = p.getId();
-		nome = p.getNome();
-		preco = p.getPreco();
+	public ProdutoDTO(Produto obj) {
+		id = obj.getId();
+		nome = obj.getNome();
+		preco = obj.getPreco();
 	}
 
 	public Integer getId() {

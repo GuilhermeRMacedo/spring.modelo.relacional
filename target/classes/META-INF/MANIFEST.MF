@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: spring.modelo.relacional
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: guilh
+Implementation-Vendor-Id: spring.modelo.relacional
+Build-Jdk: 1.8.0_162
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/spring.modelo.relacional
+Created-By: Maven Integration for Eclipse
+

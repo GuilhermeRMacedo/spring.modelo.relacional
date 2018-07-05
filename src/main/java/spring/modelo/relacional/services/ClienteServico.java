@@ -62,12 +62,12 @@ public class ClienteServico { // Chamada de serviço
 		Endereco end = new Endereco(null, objDto.getLogradouro(), objDto.getNumero(), objDto.getComplemento(),
 				objDto.getBairro(), objDto.getCep(), cli, cid);
 		cli.getEnderecos().add(end);
-		cli.getTelefone().add(objDto.getTelefone1());
+		cli.getTelefones().add(objDto.getTelefone1());
 		if (objDto.getTelefone2() != null) {
-			cli.getTelefone().add(objDto.getTelefone2());
+			cli.getTelefones().add(objDto.getTelefone2());
 		}
 		if (objDto.getTelefone3() != null) {
-			cli.getTelefone().add(objDto.getTelefone3());
+			cli.getTelefones().add(objDto.getTelefone3());
 		}
 		return cli;
 	}

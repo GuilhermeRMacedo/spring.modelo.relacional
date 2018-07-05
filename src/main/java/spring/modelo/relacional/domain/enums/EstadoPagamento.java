@@ -1,7 +1,10 @@
 package spring.modelo.relacional.domain.enums;
 
 public enum EstadoPagamento {
-	PENDENTE(1, "pendente"), QUITADO(2, "quitado"), CANCELADO(3, "cancelado");
+	
+	PENDENTE(1, "pendente"), 
+	QUITADO(2, "quitado"), 
+	CANCELADO(3, "cancelado");
 
 	private int cod;
 	private String descricao;

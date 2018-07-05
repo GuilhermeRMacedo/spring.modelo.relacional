@@ -19,9 +19,10 @@ public class URL {
 		String[] vet = s.split(",");
 		List<Integer> list = new ArrayList<Integer>();
 		
-		for(int i = 0; i < vet.length; i++) {
-			list.add(Integer.parseInt(vet[i]));
+		for(String i : vet) {
+			list.add(Integer.parseInt(i));
 		}
+		
 		return list;
 	}
 }
