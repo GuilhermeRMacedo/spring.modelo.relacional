@@ -34,6 +34,9 @@ public class PedidoServico {		//Chamada de serviço
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
 	
+	@Autowired
+	private ClienteServico clienteService;
+	
 	public Pedido findById(Integer id) {
 		Optional<Pedido> obj = repo.findById(id);
 		return obj.orElseThrow(()-> new ObjectNotFoundException("Objeto não encontrado id :) "+ id + " Tipo: "+ Categoria.class.getName()));
@@ -43,6 +46,8 @@ public class PedidoServico {		//Chamada de serviço
 	public Pedido insert(Pedido obj) {
 		obj.setId(null);			//dados do pedido
 		obj.setInstante(new Date());
+		
+		obj.setCliente(clienteService.findById(obj.getCliente().getId()));	//procura no banco pelo id, se não é null por passa só id
 		
 		obj.getPagamento().setEstado(EstadoPagamento.PENDENTE);
 		obj.getPagamento().setPedido(obj); 		//pedido conhece pagamanto assim como pagamento conhece obj
@@ -56,11 +61,14 @@ public class PedidoServico {		//Chamada de serviço
 		
 		for(ItemPedido ip : obj.getItens()) {
 			ip.setDesconto(0.0);
-			ip.setPreco(produtoService.findById(ip.getProduto().getId()).getPreco());
+			
+			ip.setProduto(produtoService.findById(ip.getProduto().getId()));	//procura no banco pelo id, se não é null por passa só id
+			
+			ip.setPreco(ip.getProduto().getPreco());
 			ip.setPedido(obj);
 		}
 		itemPedidoRepository.saveAll(obj.getItens());
-		
+		System.out.println(obj);
 		return obj;
 	}
 }
