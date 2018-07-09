@@ -2,8 +2,16 @@ package spring.modelo.relacional.services;
 
 import java.util.Date;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import spring.modelo.relacional.domain.Pedido;
 
@@ -11,6 +19,12 @@ public abstract class AbstractMailService implements EmailService{
 
 	@Value("${default.sender}")
 	private String sender;
+	
+	@Autowired
+	private TemplateEngine templateEngine;
+	
+	@Autowired
+	private JavaMailSender javaMailSender;
 	
 	@Override
 	public void sendOrderConfirmationMail(Pedido obj) {
@@ -26,5 +40,35 @@ public abstract class AbstractMailService implements EmailService{
 		sm.setSentDate(new Date(System.currentTimeMillis()));
 		sm.setText(obj.toString());
 		return sm;
+	}
+	
+	protected String htmlFromTemplatePedido(Pedido obj) {
+		Context context = new Context();
+		context.setVariable("pedido", obj);
+		return templateEngine.process("email/confimacaoPedido", context);
+	}
+	
+	@Override
+	public void sendOrderConfirmationHtmlEmail(Pedido obj) {
+		try {
+			MimeMessage mm = prepareMimeMessgeFromPedido(obj);
+			sendHtmlEmail(mm);
+		} catch (MessagingException e) {
+			sendOrderConfirmationMail(obj);
+		}
+		
+	}
+
+	protected MimeMessage prepareMimeMessgeFromPedido(Pedido obj) throws MessagingException {
+		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+		MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, true);
+		
+		mmh.setTo(obj.getCliente().getEmail());
+		mmh.setFrom(sender);
+		mmh.setSubject("Pedido confirmado "+ obj.getId());
+		mmh.setSentDate(new Date(System.currentTimeMillis()));
+		mmh.setText(htmlFromTemplatePedido(obj), true);
+		
+		return mimeMessage;
 	}
 }
