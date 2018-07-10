@@ -27,9 +27,9 @@ public abstract class AbstractMailService implements EmailService{
 	private JavaMailSender javaMailSender;
 	
 	@Override
-	public void sendOrderConfirmationMail(Pedido obj) {
+	public void sendOrderConfirmationEmail(Pedido obj) {
 		SimpleMailMessage sm = prepareSimpleMailMessageFromPedido(obj);
-		sendMail(sm);
+		sendEmail(sm);
 	}
 
 	private SimpleMailMessage prepareSimpleMailMessageFromPedido(Pedido obj) {
@@ -45,7 +45,7 @@ public abstract class AbstractMailService implements EmailService{
 	protected String htmlFromTemplatePedido(Pedido obj) {
 		Context context = new Context();
 		context.setVariable("pedido", obj);
-		return templateEngine.process("email/confimacaoPedido", context);
+		return templateEngine.process("email/confirmacaoPedido", context);
 	}
 	
 	@Override
@@ -54,7 +54,7 @@ public abstract class AbstractMailService implements EmailService{
 			MimeMessage mm = prepareMimeMessgeFromPedido(obj);
 			sendHtmlEmail(mm);
 		} catch (MessagingException e) {
-			sendOrderConfirmationMail(obj);
+			sendOrderConfirmationEmail(obj);
 		}
 		
 	}
@@ -62,13 +62,11 @@ public abstract class AbstractMailService implements EmailService{
 	protected MimeMessage prepareMimeMessgeFromPedido(Pedido obj) throws MessagingException {
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, true);
-		
 		mmh.setTo(obj.getCliente().getEmail());
 		mmh.setFrom(sender);
-		mmh.setSubject("Pedido confirmado "+ obj.getId());
+		mmh.setSubject("Pedido confirmado! Codigo: "+ obj.getId());
 		mmh.setSentDate(new Date(System.currentTimeMillis()));
 		mmh.setText(htmlFromTemplatePedido(obj), true);
-		
 		return mimeMessage;
 	}
 }
